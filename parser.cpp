@@ -66,7 +66,6 @@ double Parser::number() {
     Token *expectedRParen = this->lexer->getNextToken();
 
     if(expectedRParen->kind != Token::R_PAREN) {
-      std::cout << "OVER HERE CAPTAIN! WE GOT A " << token->kind << std::endl;
       std::cout << "Unterminated expression" << std::endl;
       value =  0.f;
     }

@@ -1,6 +1,6 @@
 #include "lexer.h"
 
-#define DEBUG 1
+#define DEBUG 0
 
 Lexer::Lexer(std::string _input): input(_input), returnPreviousToken(false), pos(0) {
 }
