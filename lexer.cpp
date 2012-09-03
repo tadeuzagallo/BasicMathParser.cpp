@@ -107,6 +107,9 @@ Token *Lexer::getNextToken() {
 
       token->kind = Token::END;
       break;
+    default:
+      std::cout << "Invalid input" << std::endl;
+      exit(0);
   }
 
   this->pos++;

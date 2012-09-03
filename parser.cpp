@@ -10,8 +10,8 @@ double Parser::parse(std::string input) {
   if(token->kind == Token::END) {
     return expressionValue;
   } else {
-    std::cout << "Unterminated expression" << std::endl;
-    return 0.f;
+    std::cout << "End expected" << std::endl;
+    exit(0);
   }
 }
 
@@ -67,12 +67,13 @@ double Parser::number() {
 
     if(expectedRParen->kind != Token::R_PAREN) {
       std::cout << "Unterminated expression" << std::endl;
-      value =  0.f;
+      exit(0);
     }
   } else if (token->kind == Token::NUMBER) {
     value = token->value;
   } else {
     std::cout << "Not a number" << std::endl;
+    exit(0);
   }
 
   return value;
