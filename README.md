@@ -1,4 +1,4 @@
-C++ implementation based on the tutorial found at http://lukaszwrobel.pl/blog/math-parser-part-1-implementation
+C++ implementation based on the tutorial found at http://lukaszwrobel.pl/blog/math-parser-part-1-introduction
 
     $ git clone git://github.com/tadeuzagallo/BasicMathParser.cpp.git && cd BasicMathParser.cpp
     $ make
