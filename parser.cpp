@@ -16,11 +16,11 @@ double Parser::parse(std::string input) {
 }
 
 double Parser::expression() {
-  double component1 = this->factor();
+  double component1 = this->component();
 
   Token *token = this->lexer->getNextToken();
   while (token->kind == Token::PLUS || token->kind == Token::MINUS) {
-    double component2 = this->factor();
+    double component2 = this->component();
 
     if(token->kind == Token::PLUS) {
       component1 += component2;
@@ -36,12 +36,12 @@ double Parser::expression() {
   return component1;
 }
 
-double Parser::factor() {
-  double factor1 = this->number();
+double Parser::component() {
+  double factor1 = this->factor();
 
   Token *token = this->lexer->getNextToken();
   while (token->kind == Token::MULTIPLY || token->kind == Token::DIVIDE) {
-    double factor2 = this->number();
+    double factor2 = this->factor();
 
     if (token->kind == Token::MULTIPLY) {
       factor1 *= factor2;
@@ -57,9 +57,18 @@ double Parser::factor() {
   return factor1;
 }
 
-double Parser::number() {
+double Parser::factor() {
   Token *token = this->lexer->getNextToken();
   double value;
+  int multiplier = 1;
+
+  if(token->kind == Token::PLUS || token->kind == Token::MINUS) {
+    if (token->kind == Token::MINUS) {
+      multiplier = -1;
+    }
+
+    token = this->lexer->getNextToken();
+  }
 
   if (token->kind == Token::L_PAREN) {
     value = this->expression();
@@ -76,5 +85,5 @@ double Parser::number() {
     exit(0);
   }
 
-  return value;
+  return value * multiplier;
 }

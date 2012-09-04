@@ -3,8 +3,8 @@
 class Parser {
   protected:
     double expression();
+    double component();
     double factor();
-    double number();
 
   public:
     Lexer *lexer;
