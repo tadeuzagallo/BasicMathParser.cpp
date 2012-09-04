@@ -1,3 +1,5 @@
+#include <string>
+
 class Token {
   public:
     enum {
@@ -7,6 +9,7 @@ class Token {
       DIVIDE,
 
       NUMBER,
+      LITERAL,
 
       L_PAREN,
       R_PAREN,
@@ -16,4 +19,5 @@ class Token {
 
     int  kind;
     double value;
+    std::string name;
 };

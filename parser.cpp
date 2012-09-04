@@ -1,4 +1,5 @@
 #include "parser.h"
+#include <math.h>
 
 double Parser::parse(std::string input) {
   this->lexer = new Lexer(input);
@@ -80,6 +81,25 @@ double Parser::factor() {
     }
   } else if (token->kind == Token::NUMBER) {
     value = token->value;
+  } else if (token->kind == Token::LITERAL) {
+    value = this->expression();
+    
+    if (token->name == "sin") {
+      value = sin(value);
+    } else if(token->name == "cos") {
+      value = cos(value);
+    } else if(token->name == "abs") {
+      value = abs(value);
+    } else if(token->name == "round") {
+      value = round(value);
+    } else if(token->name == "ceil") {
+      value = ceil(value);
+    } else if(token->name == "floor") {
+      value = floor(value);
+    } else {
+      std::cerr << "Function '" << token->name << "' not found... maybe not implemented yet..." << std::endl;
+      exit(0);
+    }
   } else {
     std::cout << "Not a number" << std::endl;
     exit(0);

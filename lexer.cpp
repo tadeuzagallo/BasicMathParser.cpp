@@ -1,5 +1,8 @@
 #include "lexer.h"
 
+#define NUMBER_MAX_LENGTH 100
+#define FUNCTION_MAX_LENGTH 10
+
 #define DEBUG 0
 
 Lexer::Lexer(std::string _input): input(_input), returnPreviousToken(false), pos(0) {
@@ -67,39 +70,6 @@ Token *Lexer::getNextToken() {
 
       token->kind = Token::R_PAREN;
       break;
-    case '0':
-    case '1':
-    case '2':
-    case '3':
-    case '4':
-    case '5':
-    case '6':
-    case '7':
-    case '8':
-    case '9': {
-      char number[100],
-           next;
-      int _pos = 0;
-
-      number[_pos++] = this->input[this->pos];
-      
-      while((next = this->input[++this->pos]) == '.' || (next - '0' >= 0 && next - '0' <= 9)) {
-        number[_pos++] = next;
-      }
-
-      number[_pos] = '\0';
-
-      token->kind = Token::NUMBER;
-      token->value = atof(number);
-
-      if (DEBUG) {
-        std::cout << "NUMBER " << token->value << " FOUND!" << std::endl;
-      }
-
-      this->pos--;
-
-      break;
-    }
     case '\0':
       if (DEBUG) {
         std::cout << "REACHED END OF INPUT!" << std::endl;
@@ -108,8 +78,47 @@ Token *Lexer::getNextToken() {
       token->kind = Token::END;
       break;
     default:
-      std::cout << "Invalid input" << std::endl;
-      exit(0);
+      if (isdigit(this->input[this->pos])) {
+        char number[NUMBER_MAX_LENGTH],
+             next;
+        int _pos = 0;
+
+        number[_pos++] = this->input[this->pos];
+        
+        while(_pos < NUMBER_MAX_LENGTH && (next = this->input[++this->pos]) == '.' || (next - '0' >= 0 && next - '0' <= 9)) {
+          number[_pos++] = next;
+        }
+
+        number[_pos] = '\0';
+
+        token->kind = Token::NUMBER;
+        token->value = atof(number);
+
+        if (DEBUG) {
+          std::cout << "NUMBER " << token->value << " FOUND!" << std::endl;
+        }
+
+        this->pos--;
+      } else if (isalpha(this->input[this->pos])) {
+        char fn[FUNCTION_MAX_LENGTH],
+             next;
+        int _pos = 0;
+
+        fn[_pos++] = this->input[this->pos];
+        while (_pos < FUNCTION_MAX_LENGTH && (next = this->input[++this->pos]) >= 'a' && next <= 'z') {
+          fn[_pos++] = next;
+        }
+
+        fn[_pos] = '\0';
+
+        token->kind = Token::LITERAL;
+        token->name = std::string(fn);
+
+        this->pos--;
+      } else {
+        std::cout << "Invalid input" << std::endl;
+        exit(0);
+      }
   }
 
   this->pos++;
